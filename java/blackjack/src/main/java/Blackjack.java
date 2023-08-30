@@ -5,6 +5,8 @@ public class Blackjack {
   private HashMap<String, Integer> cardValues = new HashMap<>();
 
   public Blackjack() {
+    // calls private method below that populates a hashmap
+    // uses more space but easier to update.
     setCardValues();
   }
 
