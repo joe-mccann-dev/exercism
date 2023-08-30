@@ -1,32 +1,48 @@
 
 class BirdWatcher {
     private final int[] birdsPerDay;
+    private final int todayIndex;
+
 
     public BirdWatcher(int[] birdsPerDay) {
         this.birdsPerDay = birdsPerDay.clone();
+        this.todayIndex = birdsPerDay.length - 1;
     }
 
     public int[] getLastWeek() {
-        throw new UnsupportedOperationException("Please implement the BirdCount.getLastWeek() method");
+        return this.birdsPerDay;
     }
 
     public int getToday() {
-        throw new UnsupportedOperationException("Please implement the BirdCount.getToday() method");
+        return this.birdsPerDay[todayIndex];
     }
 
     public void incrementTodaysCount() {
-        throw new UnsupportedOperationException("Please implement the BirdCount.incrementTodaysCount() method");
+        this.birdsPerDay[todayIndex] += 1;
     }
 
     public boolean hasDayWithoutBirds() {
-        throw new UnsupportedOperationException("Please implement the BirdCount.hasDayWithoutBirds() method");
+        for (int birdCount : this.birdsPerDay)
+          if (birdCount == 0)
+            return true;
+
+        return false;
     }
 
     public int getCountForFirstDays(int numberOfDays) {
-        throw new UnsupportedOperationException("Please implement the BirdCount.getCountForFirstDays() method");
+        int dailyCount = 0;
+        for (int dayIndex = 0; (dayIndex < numberOfDays) && (dayIndex < 7); dayIndex++)
+            dailyCount += this.birdsPerDay[dayIndex];
+        
+        return dailyCount;
     }
 
     public int getBusyDays() {
-        throw new UnsupportedOperationException("Please implement the BirdCount.getBusyDays() method");
+        int numberOfBusyDays = 0;
+        for (int birdCount : this.birdsPerDay)
+          if (birdCount > 4)
+            numberOfBusyDays += 1;
+        
+        return numberOfBusyDays;
     }
 }
