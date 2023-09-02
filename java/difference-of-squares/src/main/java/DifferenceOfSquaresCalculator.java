@@ -1,23 +1,24 @@
 class DifferenceOfSquaresCalculator {
 
   int computeSquareOfSumTo(int input) {
-    int sum = 0;
-    for (int i = 1; i <= input; i++) {
-      sum += i;
-    }
+    boolean inputIsEven = input % 2 == 0;
+    int sum = (input + 1) * (input / 2);
 
-    return (sum * sum);
+    // account for integer division of odd number by adding number back to sum;
+    sum = inputIsEven ? sum : sum + (input / 2) + 1;
+
+    return sum * sum;
   }
 
+  
+  //  Faulhaber's formula
+  // 1^2 + 2^2 + 3^2 + ... n^2 = n(n + 1)(2n + 1)) / 6
   int computeSumOfSquaresTo(int input) {
-    int currentSum = 0;
-    int sumOfSquares = 0;
-    for (int i = 1; i <= input; i++) {
-      currentSum = (i * i);
-      sumOfSquares += currentSum;
-    }
+    int numerator = input * (input + 1) * (2*input + 1);
+    int denominator = 6;
+    int result = numerator / denominator;
 
-    return sumOfSquares;
+    return (result);
   }
 
   int computeDifferenceOfSquares(int input) {
