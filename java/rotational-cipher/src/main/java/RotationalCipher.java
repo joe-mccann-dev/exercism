@@ -11,12 +11,6 @@ class RotationalCipher {
     }
 
     // handles shiftKey >= 0 && shiftKey < 0;
-    // test you can add for negative shiftKey:
-    // @Test
-    // public void rotateBackward() {
-    // rotationalCipher = new RotationalCipher(-5);
-    // Assert.assertEquals("Hello, World!", rotationalCipher.rotate("Mjqqt, Btwqi!"));
-    // }
     public String rotate(String data) {
         StringBuilder result = new StringBuilder();
         char[] dataCharacters = data.toCharArray();
