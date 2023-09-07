@@ -35,8 +35,8 @@ class Matrix {
     // from each row, populate array column with data from row at index[columnNumber - 1]
     int[] getColumn(int columnNumber) {
         int column[] = new int[matrixLength];
-        for (int i = 0; i < matrixLength; i++)
-            column[i] = matrix[i][columnNumber - 1];
+        for (int rowIndex = 0; rowIndex < matrixLength; rowIndex++)
+            column[rowIndex] = matrix[rowIndex][columnNumber - 1];
 
         return column;
     }
