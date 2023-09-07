@@ -15,7 +15,7 @@ class Matrix {
         // first row will have the same width as all others
         this.matrixWidth = numbers[0].split(" ").length;
 
-        this.matrix = new int[this.matrixLength][this.matrixWidth];
+        this.matrix = new int[matrixLength][matrixWidth];
         
         for (int rowIndex = 0; rowIndex < matrixLength; rowIndex++) {
             String[] row = numbers[rowIndex].split(" ");
@@ -36,7 +36,7 @@ class Matrix {
     // column's length is equal to the number of rows.
     // from each row, populate array column with data from row at index[columnNumber - 1]
     int[] getColumn(int columnNumber) {
-        int column[] = new int[this.matrixLength];
+        int column[] = new int[matrixLength];
         for (int i = 0; i < matrixLength; i++)
             column[i] = matrix[i][columnNumber - 1];
 
