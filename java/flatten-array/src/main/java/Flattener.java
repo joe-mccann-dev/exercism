@@ -10,18 +10,13 @@ class Flattener {
         return result;
     }
 
-    private <T> List<T> flatten(List<T> list, List<T> result) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) instanceof List) {
-                List<T> sublist = (List<T>) list.get(i);
-                flatten(sublist, result);
-            } else if (list.get(i) != null) {
-                result.add(list.get(i));
-            }
-
+    @SuppressWarnings("unchecked")
+    private <T> void flatten(List<T> list, List<T> result) {
+        for (T listItem : list) {
+            if (listItem instanceof List)
+                flatten((List<T>) listItem, result);
+            else if (listItem != null)
+                result.add(listItem);
         }
-
-        return result;
     }
-
 }
