@@ -14,7 +14,7 @@ class Flattener {
         return result;
     }
 
-    // only need to worry about List<T>
+    // only need to worry about List<T> (casting listItem to List<T> below)
     @SuppressWarnings("unchecked")
     private <T> void flatten(List<T> list, List<T> result) {
         for (T listItem : list) {
