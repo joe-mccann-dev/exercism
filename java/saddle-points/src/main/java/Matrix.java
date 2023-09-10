@@ -1,7 +1,8 @@
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class Matrix {
 
@@ -11,27 +12,20 @@ class Matrix {
         this.matrix = values;
     }
 
-    // get row data
-    // get column data
-    // find num that is largest in its row and smallest in column
-    // if those numbers are equal, add indices to result
     Set<MatrixCoordinate> getSaddlePoints() {
         Set<MatrixCoordinate> result = new HashSet<>();
         if (matrix.isEmpty())
             return result;
-
-        List<Integer> rowMaxValues = new ArrayList<>();
-        List<Integer> colMinValues = new ArrayList<>();
-
-        for (int rowIndex = 0; rowIndex < matrix.size(); rowIndex++) {
-            List<Integer> row = getRow(rowIndex);
-            rowMaxValues.add(getRowMax(row));
-        }
             
-        for (int colIndex = 0; colIndex < matrix.get(0).size(); colIndex++) {
-            List<Integer> column = getColumn(colIndex);
-            colMinValues.add(getColMin(column));
-        }
+        List<Integer> rowMaxValues = matrix.stream()
+                .map(row -> getRowMax(row))
+                .collect(Collectors.toList());
+
+        List<Integer> colMinValues = IntStream.range(0, matrix.get(0).size())
+                .mapToObj(colIndex -> getColumn(colIndex))
+                .mapToInt(this::getColMin)
+                .boxed()
+                .collect(Collectors.toList());
 
         for (int rowIndex = 0; rowIndex < matrix.size(); rowIndex++) {
             int currentRowMax = rowMaxValues.get(rowIndex);
@@ -52,34 +46,15 @@ class Matrix {
     }
 
     List<Integer> getColumn(int colNumber) {
-        List<Integer> column = new ArrayList<>();
-        for (int rowIndex = 0; rowIndex < this.matrix.size(); rowIndex++) {
-            int columnInteger = this.matrix.get(rowIndex).get(colNumber);
-            column.add(rowIndex, columnInteger);
-        }
-
-        return column;
+        return matrix.stream().map(row -> row.get(colNumber)).collect(Collectors.toList());
     }
 
     private int getRowMax(List<Integer> row) {
-        int rowMax = Integer.MIN_VALUE;
-        int current = 0;
-        for (int value : row) {
-            current = value;
-            rowMax = current > rowMax ? current : rowMax;
-        }
-        return rowMax;
+        return row.stream().mapToInt(Integer::intValue).max().orElse(Integer.MIN_VALUE);
     }
 
     private int getColMin(List<Integer> col) {
-        int colMin = Integer.MAX_VALUE;
-        int current = 0;
-        for (int value : col) {
-            current = value;
-            colMin = current < colMin ? current : colMin;
-        }
-
-        return colMin;
+        return col.stream().mapToInt(Integer::intValue).min().orElse(Integer.MAX_VALUE);
     }
 
 }
