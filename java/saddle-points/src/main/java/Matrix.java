@@ -20,20 +20,24 @@ class Matrix {
         if (matrix.isEmpty())
             return result;
 
-        
-        List<Integer> row;
-        List<Integer> col;
-        int rowMax;
-        int colMin;
-        int rowLength = this.matrix.get(0).size();
-        
+        List<Integer> rowMaxValues = new ArrayList<>();
+        List<Integer> colMinValues = new ArrayList<>();
+
         for (int rowIndex = 0; rowIndex < matrix.size(); rowIndex++) {
-            for (int colIndex = 0; colIndex < rowLength; colIndex++) {
-                row = getRow(rowIndex);
-                col = getColumn(colIndex);
-                rowMax = getRowMax(row);
-                colMin = getColMin(col);
-                if (rowMax == colMin) {
+            List<Integer> row = getRow(rowIndex);
+            rowMaxValues.add(getRowMax(row));
+        }
+            
+        for (int colIndex = 0; colIndex < matrix.get(0).size(); colIndex++) {
+            List<Integer> column = getColumn(colIndex);
+            colMinValues.add(getColMin(column));
+        }
+
+        for (int rowIndex = 0; rowIndex < matrix.size(); rowIndex++) {
+            int currentRowMax = rowMaxValues.get(rowIndex);
+            for (int colIndex = 0; colIndex < matrix.get(0).size(); colIndex++) {
+                int currentColMin = colMinValues.get(colIndex);
+                if (currentRowMax == currentColMin) {
                     MatrixCoordinate saddlePoint = new MatrixCoordinate(rowIndex + 1, colIndex + 1);
                     result.add(saddlePoint);
                 }
