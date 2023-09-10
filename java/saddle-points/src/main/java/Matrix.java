@@ -27,6 +27,8 @@ class Matrix {
                 .boxed()
                 .collect(Collectors.toList());
 
+        // each row has a max, so rowMaxValues' index will corresponsd to respective rowIndex
+        // similar is true for colMinValues
         for (int rowIndex = 0; rowIndex < matrix.size(); rowIndex++) {
             int currentRowMax = rowMaxValues.get(rowIndex);
             for (int colIndex = 0; colIndex < matrix.get(0).size(); colIndex++) {
