@@ -1,58 +1,59 @@
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class Matrix {
 
-    List<List<Integer>> matrix;
+    private List<List<Integer>> matrix;
 
-    Matrix(List<List<Integer>> values) {
+    public Matrix(List<List<Integer>> values) {
         this.matrix = values;
     }
 
-    Set<MatrixCoordinate> getSaddlePoints() {
-        Set<MatrixCoordinate> result = new HashSet<>();
-        if (matrix.isEmpty())
-            return result;
-            
-        List<Integer> rowMaxValues = matrix.stream()
-                .map(row -> getRowMax(row))
-                .collect(Collectors.toList());
+    public Set<MatrixCoordinate> getSaddlePoints() {
+        List<Integer> rowMaxValues = getRowMaxValues();
+        List<Integer> colMinValues = getColMinValues();
+    
+        return IntStream.range(0, matrix.size())
+                .boxed()
+                .flatMap(rowIndex -> IntStream.range(0, matrix.get(0).size())
+                        .mapToObj(colIndex -> {
+                            int currentRowMax = rowMaxValues.get(rowIndex);
+                            int currentColMin = colMinValues.get(colIndex);
+                            if (currentRowMax == currentColMin)
+                                return new MatrixCoordinate(rowIndex + 1, colIndex + 1);
+    
+                            return null;
+                        }))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+    
 
-        List<Integer> colMinValues = IntStream.range(0, matrix.get(0).size())
+    private List<Integer> getRowMaxValues() {
+        return matrix.stream().map(row -> getRowMax(row)).collect(Collectors.toList());
+    }
+
+    private List<Integer> getColMinValues() {
+        if (matrix.isEmpty())
+            return Collections.emptyList();
+
+        return IntStream.range(0, matrix.get(0).size())
                 .mapToObj(colIndex -> getColumn(colIndex))
                 .mapToInt(this::getColMin)
                 .boxed()
                 .collect(Collectors.toList());
-
-        // each row has a max, so rowMaxValues' index will corresponsd to respective rowIndex
-        // similar is true for colMinValues
-        for (int rowIndex = 0; rowIndex < matrix.size(); rowIndex++) {
-            int currentRowMax = rowMaxValues.get(rowIndex);
-            for (int colIndex = 0; colIndex < matrix.get(0).size(); colIndex++) {
-                int currentColMin = colMinValues.get(colIndex);
-                if (currentRowMax == currentColMin) {
-                    MatrixCoordinate saddlePoint = new MatrixCoordinate(rowIndex + 1, colIndex + 1);
-                    result.add(saddlePoint);
-                }
-            }
-        }
-
-        return result;
-    }
-
-    List<Integer> getRow(int rowNumber) {
-        return this.matrix.get(rowNumber);
-    }
-
-    List<Integer> getColumn(int colNumber) {
-        return matrix.stream().map(row -> row.get(colNumber)).collect(Collectors.toList());
     }
 
     private int getRowMax(List<Integer> row) {
         return row.stream().mapToInt(Integer::intValue).max().orElse(Integer.MIN_VALUE);
+    }
+
+    private List<Integer> getColumn(int colNumber) {
+        return matrix.stream().map(row -> row.get(colNumber)).collect(Collectors.toList());
     }
 
     private int getColMin(List<Integer> col) {
