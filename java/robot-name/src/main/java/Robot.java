@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -11,7 +12,7 @@ class Robot {
     private final static int UPPER_BOUND = 1000;
 
     private String name;
-    private final static Set<String> TAKEN_NAMES = new HashSet<>();
+    private static Set<String> TAKEN_NAMES = Collections.synchronizedSet(new HashSet<>());
 
     public Robot() {
         setName();
