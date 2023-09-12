@@ -7,8 +7,8 @@ class Robot {
     private final static int PREFIX_LENGTH = 2;
     private final static int ASCII_UPPERCASE_A = 65;
     private final static int ASCII_UPPERCASE_Z = 90;
-    private final static int LOWER_BOUND = 100;
-    private final static int UPPER_BOUND = 999;
+    private final static int ORIGIN = 100;
+    private final static int UPPER_BOUND = 1000;
 
     private String name;
     private final static Set<String> TAKEN_NAMES = new HashSet<>();
@@ -34,7 +34,7 @@ class Robot {
         while (nameIsTaken) {
             robotName = new StringBuilder();
             String prefix = getLetterPrefix(PREFIX_LENGTH);
-            String randomNumber = String.valueOf(getRandomNumber(LOWER_BOUND, UPPER_BOUND));
+            String randomNumber = String.valueOf(getRandomNumber(ORIGIN, UPPER_BOUND));
             robotName.append(prefix);
             robotName.append(randomNumber);
             nameIsTaken = TAKEN_NAMES.contains(robotName.toString());
