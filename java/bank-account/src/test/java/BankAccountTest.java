@@ -101,7 +101,7 @@ public class BankAccountTest {
         bankAccount.close();
 
         assertThatExceptionOfType(BankAccountActionInvalidException.class)
-            .isThrownBy(bankAccount::getBalance)
+                .isThrownBy(bankAccount::getBalance)
             .withMessage("Account closed");
     }
 

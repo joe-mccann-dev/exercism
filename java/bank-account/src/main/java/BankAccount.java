@@ -60,7 +60,7 @@ class BankAccount {
         if ((getBalance() - amount) < 0)
             return "Cannot withdraw more money than is currently in the account";
 
-        return "";
+        return "An unknown error occurred";
     }
 
 }
