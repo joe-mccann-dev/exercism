@@ -23,24 +23,15 @@ class BankAccount {
     }
 
     synchronized void deposit(int amount) throws BankAccountActionInvalidException {
-        if (amount < 0)
-            throw new BankAccountActionInvalidException("Cannot deposit or withdraw negative amount");
-
-        if (!getActive())
-            throw new BankAccountActionInvalidException("Account closed");
+        if (depositNotAllowed(amount))
+            throw new BankAccountActionInvalidException(getMessage(amount));
 
         setBalance(getBalance() + amount);
     }
 
     synchronized void withdraw(int amount) throws BankAccountActionInvalidException {
-        if (getBalance() <= 0)
-            throw new BankAccountActionInvalidException("Cannot withdraw money from an empty account");
-
-        if ((getBalance() - amount) < 0)
-            throw new BankAccountActionInvalidException("Cannot withdraw more money than is currently in the account");
-
-        if (amount < 0)
-            throw new BankAccountActionInvalidException("Cannot deposit or withdraw negative amount");
+        if (withdrawNotAllowed(amount))
+            throw new BankAccountActionInvalidException(getMessage(amount));
 
         setBalance(getBalance() - amount);
     }
@@ -51,6 +42,25 @@ class BankAccount {
 
     private void setBalance(int amount) {
         this.balance = amount;
+    }
+
+    private boolean withdrawNotAllowed(int amountToWithdraw) throws BankAccountActionInvalidException {
+        return getBalance() <= 0 || ((getBalance() - amountToWithdraw) < 0) || amountToWithdraw < 0;
+    }
+
+    private boolean depositNotAllowed(int amountToDeposit) throws BankAccountActionInvalidException {
+        return (amountToDeposit < 0) || !getActive();
+    }
+
+    private String getMessage(int amount) throws BankAccountActionInvalidException {
+        if (amount < 0)
+            return "Cannot deposit or withdraw negative amount";
+        if (getBalance() <= 0)
+            return "Cannot withdraw money from an empty account";
+        if ((getBalance() - amount) < 0)
+            return "Cannot withdraw more money than is currently in the account";
+
+        return "";
     }
 
 }
