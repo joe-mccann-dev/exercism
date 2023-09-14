@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 class Anagram {
 
@@ -9,14 +10,13 @@ class Anagram {
     private Map<Character, Integer> wordToMatchMap;
 
     public Anagram(String word) {
-        setWordToMatch(word);
+        setWordToMatch(word.toLowerCase());
         setWordToMatchMap();
     }
 
     public List<String> match(List<String> candidates) {
         List<String> result = new ArrayList<>();
         for (String candidate : candidates) {
-
             if (isAnagram(candidate))
                 result.add(candidate);
         }
@@ -28,14 +28,14 @@ class Anagram {
         if (getWordToMatch().length() != candidate.length())
             return false;
 
-        if (getWordToMatch().equals(candidate.toLowerCase()))
+        if (getWordToMatch().equalsIgnoreCase(candidate))
             return false;
 
-        Map<Character, Integer> candidateLetterMap = getCandidateLetterCount(candidate);
+        Map<Character, Integer> candidateLetterMap = getCandidateLetterMap(candidate);
 
         for (Character ch : getWordToMatch().toCharArray()) {
             int letterCount = getWordToMatchMap().get(ch);
-            int candidateLetterCount = candidateLetterMap.get(ch) != null ? candidateLetterMap.get(ch) : 0;
+            int candidateLetterCount = Optional.ofNullable(candidateLetterMap.get(ch)).orElse(0);
             if (letterCount != candidateLetterCount)
                 return false;
         }
@@ -43,23 +43,20 @@ class Anagram {
         return true;
     }
 
-    private Map<Character, Integer> getCandidateLetterCount(String candidate) {
+    private Map<Character, Integer> getCandidateLetterMap(String candidate) {
         Map<Character, Integer> currentWordMap = new HashMap<>();
         char[] candidateChars = candidate.toLowerCase().toCharArray();
-        for (Character ch : candidateChars)
-            currentWordMap.put(ch, 0);
 
         for (Character ch : candidateChars) {
-            int charCount = currentWordMap.get(ch);
-            currentWordMap.put(ch, charCount + 1);
+            currentWordMap.computeIfAbsent(ch, k -> 0);
+            currentWordMap.put(ch, currentWordMap.get(ch) + 1);
         }
 
         return currentWordMap;
-
     }
 
     private String getWordToMatch() {
-        return this.wordToMatch.toLowerCase();
+        return this.wordToMatch;
     }
 
     private void setWordToMatch(String word) {
@@ -73,15 +70,11 @@ class Anagram {
     private void setWordToMatchMap() {
         this.wordToMatchMap = new HashMap<>();
 
-        char[] wordChars = getWordToMatch().toLowerCase().toCharArray();
-
-        for (Character ch : wordChars)
-            this.wordToMatchMap.put(ch, 0);
+        char[] wordChars = getWordToMatch().toCharArray();
 
         for (Character ch : wordChars) {
-            int charCount = this.wordToMatchMap.get(ch);
-            this.wordToMatchMap.put(ch, charCount + 1);
+            this.wordToMatchMap.computeIfAbsent(ch, k -> 0);
+            this.wordToMatchMap.put(ch, getWordToMatchMap().get(ch) + 1);
         }
     }
-
 }
