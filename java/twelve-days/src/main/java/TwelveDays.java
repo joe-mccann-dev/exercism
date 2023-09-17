@@ -7,13 +7,12 @@ class TwelveDays {
 
         int penUltimateVerse = 2;
         for (int i = verseNumber; i >= 1; i--) {
-            if (i == penUltimateVerse) {
+            if (i == penUltimateVerse)
                 result.append(verseFragment(penUltimateVerse) + " and ");
-            } else if (i > 1) {
+            else if (i > 1)
                 result.append(verseFragment(i) + " ");
-            } else {
+            else
                 result.append(verseFragment(i));
-            }
         }
 
         return result.toString();
@@ -21,11 +20,19 @@ class TwelveDays {
     }
 
     String verses(int startVerse, int endVerse) {
-        throw new UnsupportedOperationException("Delete this statement and write your own implementation.");
+        StringBuilder result = new StringBuilder();
+
+        for (int i = startVerse; i < endVerse; i++) {
+            result.append(verse(i));
+            result.append('\n');
+        }
+        result.append(verse(endVerse));
+
+        return result.toString();
     }
 
     String sing() {
-        throw new UnsupportedOperationException("Delete this statement and write your own implementation.");
+        return verses(1, 12);
     }
 
     private String verseFragment(int verseNumber) {
